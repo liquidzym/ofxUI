@@ -105,11 +105,22 @@ public:
         
         ofPopStyle(); 
     }
+
+    void setVisible(bool _visible)
+    {
+        visible = _visible; 
+        label->setVisible(visible); 
+    }    
 				
 	ofxUILabel *getLabel()
 	{
 		return label; 
 	}
+    
+    void setImage(ofImage *_image)
+    {
+        image = _image; 
+    }
 	
 	void setParent(ofxUIWidget *_parent)
 	{

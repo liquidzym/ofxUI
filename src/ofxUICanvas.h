@@ -188,14 +188,11 @@ public:
         ofxXmlSettings *XML = new ofxXmlSettings(); 
         XML->loadFile(fileName); 
         int widgetTags = XML->getNumTags("Widget"); 
-        cout << "Number of Tags: " << widgetTags << endl; 
         for(int i = 0; i < widgetTags; i++)
         {
             XML->pushTag("Widget", i);
             int kind = XML->getValue("Kind", 0, 0);
-            cout << "Widget Kind: " << kind << endl; 
             string name = XML->getValue("Name", "NULL", 0);
-            cout << "Widget Name: " << name << endl; 
             ofxUIWidget *widget = getWidget(name); 
             if(widget != NULL)
             {
@@ -294,7 +291,7 @@ public:
                 break;
         }        
     }
-    
+        
     //Easy Font setting contributed from Colin Duffy (colin@tomorrowevening.com)
     bool setFont(string filename, bool _bAntiAliased=true, bool _bFullCharacterSet=true, bool makeContours=false, float simplifyAmt=0.0, int dpi=OFX_UI_FONT_RESOLUTION) 
     {
@@ -702,11 +699,6 @@ public:
         }    
     }	
     
-    bool isHit(int x, int y)
-    {
-        return rect->inside(x, y);
-    }
-    
 	void onKeyPressed(ofKeyEventArgs& data)
     {
 		keyPressed(data.key); 
@@ -748,6 +740,19 @@ public:
     
 #endif	
 	
+    bool isHit(int x, int y)
+    {
+        if(isEnabled())
+        {
+            return rect->inside(x, y);
+        }
+        else
+        {
+            return false; 
+        }
+    }
+    
+
     void stateChange()
     {        
         switch (state) 
@@ -844,8 +849,10 @@ public:
 			ofxUILabel *label = (ofxUILabel *) button->getLabel();
 			setLabelFont(label); 			
 			pushbackWidget(label); 		
-			
-            widgetsWithState.push_back(widget);                         
+            if(widget->getKind() != OFX_UI_WIDGET_BUTTON && widget->getKind() != OFX_UI_WIDGET_LABELBUTTON)
+            {
+                widgetsWithState.push_back(widget);                         
+            }
 		}
         else if(widget->getKind() == OFX_UI_WIDGET_DROPDOWNLIST)            
         { 
@@ -947,7 +954,7 @@ public:
 		widget->setRectParent(this->rect); 		
 		pushbackWidget(widget); 	
 	}
-		
+    
 	void addWidgetDown(ofxUIWidget *widget, ofxWidgetAlignment align = OFX_UI_ALIGN_LEFT)
 	{
 		addWidget(widget); 
@@ -1208,6 +1215,16 @@ public:
 		return widgets_map[_name]; 
 	}
 	
+    void removeWidget(string _name)    
+    {
+        //To Implement
+    }
+    
+    void removeWidget(ofxUIWidget *widget)
+	{
+        //To Implement
+	}
+    
 	void setDrawPadding(bool _draw_padded_rect)
 	{
 		draw_padded_rect = _draw_padded_rect; 

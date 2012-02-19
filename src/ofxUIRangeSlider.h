@@ -434,13 +434,19 @@ public:
         }        
     }
 	
-	float setValueLow(float _value)
+    void setVisible(bool _visible)
+    {
+        visible = _visible; 
+        label->setVisible(visible); 
+    }
+    
+	void setValueLow(float _value)
 	{			
 		valuelow = ofMap(_value, min, max, 0.0, 1.0, true); 
 		updateLabel(); 		
 	}
 
-	float setValueHigh(float _value)
+	void setValueHigh(float _value)
 	{
 		valuehigh = ofMap(_value, min, max, 0.0, 1.0, true); 
 		updateLabel(); 		
